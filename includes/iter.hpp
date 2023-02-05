@@ -6,13 +6,14 @@
 /*   By: mhaddaou <mhaddaou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 16:03:56 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/04 17:25:11 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/05 12:06:48 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
 #include <string>
+#include <cstddef>
 
 namespace ft{
     
@@ -46,69 +47,43 @@ namespace ft{
         private:
             T* _ptr;
         public:
+            typedef std::ptrdiff_t difference_type ;
+            typedef std::random_access_iterator_tag iterator_category ;
             
             randomAccessIterator();
-            randomAccessIterator(T *ptr);
-            randomAccessIterator(const randomAccessIterator &other);
-            randomAccessIterator& operator=(const randomAccessIterator& other);
+            randomAccessIterator(T ptr);
+            randomAccessIterator( randomAccessIterator &other);
+            randomAccessIterator& operator=( randomAccessIterator& other);
             ~randomAccessIterator();
             T& operator*();
             T& operator->();
-              random_access_iterator& operator++(){
-                _ptr++;
-                return *this;
-            }
-            random_access_iterator operator++(int){
-                random_access_iterator tmp(*this);
-                operator++();
-                return tmp;
-            }
-            random_access_iterator& operator--(){
-                _ptr--;
-                return *this;
-            }
-            random_access_iterator operator--(int){
-                random_access_iterator tmp(*this);
-                operator--();
-                return tmp;
-            }
-            random_access_iterator operator+(int n){
-                return random_access_iterator(_ptr + n);
-            }
-            random_access_iterator operator-(int n){
-                return random_access_iterator(_ptr - n);
-            }
-            random_access_iterator& operator+=(int n){
-                _ptr += n;
-                return *this;
-            }
-            random_access_iterator& operator-=(int n){
-                _ptr -= n;
-                return *this;
-            }
-            bool operator==(const random_access_iterator& other){
-                return _ptr == other._ptr;
-            }
-            bool operator!=(const random_access_iterator& other){
-                return _ptr != other._ptr;
-            }
-            bool operator<(const random_access_iterator& other){
-                return _ptr < other._ptr;
-            }
-            bool operator>(const random_access_iterator& other){
-                return _ptr > other._ptr;
-            }
-            bool operator<=(const random_access_iterator& other){
-                return _ptr <= other._ptr;
-            }
-            bool operator>=(const random_access_iterator& other){
-                return _ptr >= other._ptr;
-            }
-            T& operator[](int n){
-                return _ptr[n];
-            }
+            
+            
+            //pre-increment
+            randomAccessIterator& operator++();
+            // pre-decrement
+            randomAccessIterator& operator--();
+            // post-increment
+            randomAccessIterator operator++(int);
+            // post-decrement
+            randomAccessIterator operator--(int);
 
             
+            randomAccessIterator operator+(difference_type n);
+            randomAccessIterator operator=(T n);
+            randomAccessIterator operator-(difference_type n);
+            randomAccessIterator& operator+=(difference_type n);
+            randomAccessIterator& operator-=(difference_type n);
+            
+            
+            bool operator == (const randomAccessIterator& other);
+            bool operator != (const randomAccessIterator& other);
+            bool operator < (const randomAccessIterator& other);
+            bool operator > (const randomAccessIterator& other);
+            bool operator <= (const randomAccessIterator& other);
+            bool operator >= (const randomAccessIterator& other);
+            
+            T & operator[] (int n);
             
     };
 }
