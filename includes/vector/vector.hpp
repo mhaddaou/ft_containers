@@ -6,7 +6,7 @@
 /*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 00:46:02 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/07 06:30:15 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/07 23:53:54 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 namespace ft{
       
 template<class T,class Allocator = std::allocator<T> > 
-class Vector : public std::exception
+class Vector 
 {
     private:
         size_t _size;
@@ -43,7 +43,7 @@ class Vector : public std::exception
             
             // deallocate like free
             // destroy like memeset
-
+        // Member functions
         Vector(){
             _size = 0;
             _data = NULL;
@@ -82,7 +82,7 @@ class Vector : public std::exception
                 ++first;
             }
         }
-        virtual ~Vector() _NOEXCEPT{
+        ~Vector() _NOEXCEPT{
             _alloc.deallocate(_data, _size);
             _data = NULL;
         }
@@ -134,6 +134,7 @@ class Vector : public std::exception
         allocator_type get_allocator() const{
             return (_alloc);
         }
+        // Element access
         reference at( size_type pos ){
             if ( pos >= _size){
                 std::string index = to_str(pos);
@@ -202,6 +203,7 @@ class Vector : public std::exception
         const_iterator end() const{
             return (_data + _size);
         }
+        // Capacity
         bool empty() const{
             return (_size == 0);
         }
@@ -209,19 +211,58 @@ class Vector : public std::exception
             return (_size);
         }
         size_type max_size() const{
-            return (std::numeric_limits<difference_type>::max());
+            return _alloc.max_size();
         }
         void reserve( size_type new_cap ){
             if (new_cap <= _size)
                 return;
+            int free_size = _capacity;
             _capacity = new_cap;
             T* copy;
-            copy = _alloc.allocate(_capacity);
-            for( size_type i = 0; i < _size;i++){
-                _alloc.construct(copy +i, _data + i);
+            copy = _alloc.allocate(_size);
+            for(size_type i = 0; i < _size;i++){
+                _alloc.construct(copy + i, _data[i]);
             }
-            std::cout << copy[0] << std::endl;
+            _alloc.deallocate(_data, free_size);
+            _data = _alloc.allocate(_capacity);
+            for(size_type i = 0; i < _size; i++){
+                _alloc.construct(_data  + i, copy[i]);
+            }
+            _alloc.deallocate(copy, _size);
         }
+        size_type capacity() const{
+            return (_capacity);
+        }
+        // Modifiers
+        void clear(){
+            _alloc.destroy(_data);
+            _size = 0;
+        }
+        // when you finish inser don't forget to add const to iterator pos
+        iterator insert( iterator pos, const T& value ){
+            // _size++;
+            difference_type size_free = _capacity;
+            if (_size + 1 > static_cast<size_type> (_capacity))
+                _capacity *= 2;    
+            T* copy = _alloc.allocate(_capacity);
+            int i = 0;
+            for(RandomAccessIterator<T> it = this->begin();it != pos; it++){
+                _alloc.construct(copy + i, *it);
+                i++;
+            }
+            _alloc.construct(copy + i++, value);
+            for(; pos != this->end(); pos++){
+                _alloc.construct(copy + i, *pos);
+                i++;
+            }
+            _size++;
+            _alloc.deallocate(_data, size_free);
+            _data = copy;
+            std::cout << _data[0] << std::endl;
+            return _data;
+        }
+        
+        
 };
 };
 
