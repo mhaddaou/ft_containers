@@ -6,7 +6,7 @@
 /*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 00:46:02 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/06 22:25:07 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/07 06:30:15 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 #include <stdlib.h>
 #include <string>
 #include "ra_iterator.hpp"
+#include <sstream>
 namespace ft{
       
 template<class T,class Allocator = std::allocator<T> > 
-class Vector{
+class Vector : public std::exception
+{
     private:
         size_t _size;
         T*  _data;
@@ -74,14 +76,13 @@ class Vector{
             // }
             _size = std::distance(first, last);
             _capacity = _size;
-            _data = _alloc.allocate(_size);
-            std::cout << _size << std::endl;    
+            _data = _alloc.allocate(_size);   
             for(size_t i = 0; i < _size; ++i){
                 _alloc.construct(_data + i, *first);
                 ++first;
             }
         }
-        ~Vector(){
+        virtual ~Vector() _NOEXCEPT{
             _alloc.deallocate(_data, _size);
             _data = NULL;
         }
@@ -115,10 +116,114 @@ class Vector{
         }
         template< class InputIt >
         void assign( InputIt first, InputIt last ){
+            _size = std::distance(first, last);
+            _capacity = _size;
+            _data = _alloc.allocate(_size);
+            for(size_type i = 0; first !=  last; ++i){
+                _alloc.construct(_data + i, *first);
+                ++first;
+            }
+        }
+        // convert unsigned int to string
+        std::string to_str (unsigned int value){
+            std::stringstream ss;
+            ss << value;
+            return ss.str();
+        }
+        // class 
+        allocator_type get_allocator() const{
+            return (_alloc);
+        }
+        reference at( size_type pos ){
+            if ( pos >= _size){
+                std::string index = to_str(pos);
+                throw std::out_of_range( index + " is out of bounds" );
+            }
+            return (_data[pos]);
             
         }
-    };
-    
+        const_reference at( size_type pos ) const{
+            if (pos >= _size){
+                std::string index = to_str(pos);
+                throw std::out_of_range( index + " is out of bounds");
+            }
+            return (_data[pos]);
+        }
+        reference operator[]( size_type pos ){
+            if (pos >= _size){
+                std::string index = to_str(pos);
+                throw std::out_of_range( index + " is out of bounds");
+            }
+            return (_data[pos]);
+        }
+        const_reference operator[]( size_type pos ) const{
+            if (pos >= _size){
+                std::string index = to_str(pos);
+                throw std::out_of_range( index + " is out of bounds");
+            }
+            return (_data[pos]);
+        }
+        reference front(){
+            if (_size == 0)
+                throw std::out_of_range("ft::Vector::front: vector is empty");
+            return (_data[0]);
+        }
+        const_reference front() const{
+            if (_size == 0)
+                throw std::out_of_range("ft::Vector::front: vector is empty");
+            return (_data[0]);
+        }
+        reference back(){
+            if (_size == 0)
+                throw std::out_of_range("ft::Vector::back: vector is empty");
+            return (_data[_size - 1]);
+        }
+        const_reference back() const{
+            if (_size == 0)
+                throw std::out_of_range("ft::Vector::back: vector is empty");
+            return (_data[_size - 1]);
+        }
+        T* data(){
+            if (_size == 0)
+                return NULL;
+            return _data;
+        }
+        const T* data() const{
+            if (_size == 0)
+                return NULL;
+            return _data;
+        }
+        iterator begin(){
+            return (_data);
+        }
+        iterator end(){
+            return (_data + _size);
+        }
+        const_iterator end() const{
+            return (_data + _size);
+        }
+        bool empty() const{
+            return (_size == 0);
+        }
+        size_type size() const{
+            return (_size);
+        }
+        size_type max_size() const{
+            return (std::numeric_limits<difference_type>::max());
+        }
+        void reserve( size_type new_cap ){
+            if (new_cap <= _size)
+                return;
+            _capacity = new_cap;
+            T* copy;
+            copy = _alloc.allocate(_capacity);
+            for( size_type i = 0; i < _size;i++){
+                _alloc.construct(copy +i, _data + i);
+            }
+            std::cout << copy[0] << std::endl;
+        }
 };
+};
+
 
 #endif
