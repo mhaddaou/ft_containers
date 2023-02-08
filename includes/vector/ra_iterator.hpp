@@ -6,7 +6,7 @@
 /*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 08:09:12 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/06 19:05:46 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/08 20:52:06 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ namespace ft{
             RandomAccessIterator & operator --();
             RandomAccessIterator  operator ++(int);
             RandomAccessIterator  operator --(int);
+            operator RandomAccessIterator< T const>() const{
+                return RandomAccessIterator< T const>(_ptr);
+            }
             T &operator *() const;
             T* operator ->() const;
 

@@ -6,7 +6,7 @@
 /*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 17:45:59 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/06 18:26:21 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/08 17:05:24 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ ft::RandomAccessIterator<T>& ft::RandomAccessIterator<T>::operator++(){
 
 template< typename T >
 ft::RandomAccessIterator<T>& ft::RandomAccessIterator<T>::operator--(){
-    _ptr--;
+    --_ptr;
     return (*this);
 }
 

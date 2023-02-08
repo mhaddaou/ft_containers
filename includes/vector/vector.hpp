@@ -6,7 +6,7 @@
 /*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 00:46:02 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/07 23:53:54 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/08 20:51:54 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 namespace ft{
       
 template<class T,class Allocator = std::allocator<T> > 
-class Vector 
+class vector 
 {
     private:
         size_t _size;
@@ -39,26 +39,27 @@ class Vector
         typedef typename Allocator::pointer  pointer;
         typename Allocator::const_pointer    const_pointer;
         typedef ft::RandomAccessIterator<T> iterator;
-        typedef typename ft::RandomAccessIterator<const T>  const_iterator;
+        //don't forget to add const inside brackerts of T <const T>
+        typedef ft::RandomAccessIterator<const T>  const_iterator;
             
             // deallocate like free
             // destroy like memeset
         // Member functions
-        Vector(){
+        vector(){
             _size = 0;
             _data = NULL;
             _capacity = 0;
             _alloc = Allocator();
         };
-        explicit Vector( const Allocator& alloc ){
+        explicit vector( const Allocator& alloc ){
             _size = 0;
             _data = NULL;
             _capacity = 0;
             _alloc = alloc;
         };
         // _data = _alloc.allocate(    number of allocations );
-        // Vector(count nummber of times , value inserted value count times)
-        explicit Vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) :_size(0){
+        // vector(count nummber of times , value inserted value count times)
+        explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) :_size(0){
             _capacity = count;
             _alloc = alloc;
             _data = _alloc.allocate( count );
@@ -67,9 +68,9 @@ class Vector
                 _size++;
             }
         }
-        //inserted range of a nother Vector  
+        //inserted range of a nother vector  
         template< class InputIt > 
-        Vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() ) : _size(0){
+        vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() ) : _size(0){
             _alloc = alloc;
             // for (InputIt i = first; i != last; ++i){
             //     _size ++;
@@ -82,14 +83,14 @@ class Vector
                 ++first;
             }
         }
-        ~Vector() _NOEXCEPT{
+        ~vector() _NOEXCEPT{
             _alloc.deallocate(_data, _size);
             _data = NULL;
         }
-        Vector( const Vector& other ){
+        vector( const vector& other ){
             this  = other;
         }
-        Vector& operator=( const Vector& other){
+        vector& operator=( const vector& other){
             _size = other._size;
             _capacity = other._capacity;
             _alloc = other._alloc;
@@ -166,22 +167,22 @@ class Vector
         }
         reference front(){
             if (_size == 0)
-                throw std::out_of_range("ft::Vector::front: vector is empty");
+                throw std::out_of_range("ft::vector::front: vector is empty");
             return (_data[0]);
         }
         const_reference front() const{
             if (_size == 0)
-                throw std::out_of_range("ft::Vector::front: vector is empty");
+                throw std::out_of_range("ft::vector::front: vector is empty");
             return (_data[0]);
         }
         reference back(){
             if (_size == 0)
-                throw std::out_of_range("ft::Vector::back: vector is empty");
+                throw std::out_of_range("ft::vector::back: vector is empty");
             return (_data[_size - 1]);
         }
         const_reference back() const{
             if (_size == 0)
-                throw std::out_of_range("ft::Vector::back: vector is empty");
+                throw std::out_of_range("ft::vector::back: vector is empty");
             return (_data[_size - 1]);
         }
         T* data(){
@@ -239,14 +240,14 @@ class Vector
             _size = 0;
         }
         // when you finish inser don't forget to add const to iterator pos
-        iterator insert( iterator pos, const T& value ){
+        iterator insert( const_iterator pos, const T& value ){
             // _size++;
             difference_type size_free = _capacity;
             if (_size + 1 > static_cast<size_type> (_capacity))
                 _capacity *= 2;    
             T* copy = _alloc.allocate(_capacity);
             int i = 0;
-            for(RandomAccessIterator<T> it = this->begin();it != pos; it++){
+            for(const_iterator it = this->begin();it != pos; it++){
                 _alloc.construct(copy + i, *it);
                 i++;
             }
@@ -257,10 +258,102 @@ class Vector
             }
             _size++;
             _alloc.deallocate(_data, size_free);
-            _data = copy;
-            std::cout << _data[0] << std::endl;
+            _data  = _alloc.allocate(_capacity);
+            for(size_type i = 0; i < _size; i++){
+                _alloc.construct(_data  + i, copy[i]);
+            }
+            _alloc.deallocate(copy, _capacity);
             return _data;
         }
+        iterator insert( const_iterator pos, size_type count, const T& value ){
+            difference_type  size_free = _capacity;
+            T* copy = _alloc.allocate(_capacity + count);
+            int i = 0;
+            for(const_iterator it = this->begin();it != pos; it++){
+                _alloc.construct(copy + i, *it);
+                i++;
+            }
+            iterator end = this->end();
+            for(size_type j = 0; j < count; j++){
+                if (_size + 1 > static_cast<size_type> (_capacity))
+                    _capacity *= 2;
+                _alloc.construct(copy + i, value);
+                i++;
+                _size++;
+            }
+            for(; pos != end; pos++){
+                _alloc.construct(copy + i, *pos);
+                i++;
+            }
+            _alloc.deallocate(_data, size_free);
+            _data  = _alloc.allocate(_capacity);
+            for(size_type i = 0; i < _size; i++){
+                _alloc.construct(_data  + i, copy[i]);
+            }
+            _alloc.deallocate(copy, _capacity);
+            return _data;
+        }
+        // template< class InputIt >
+        // iterator insert( const_iterator pos, InputIt first, InputIt last ){
+        //     iterator calcul = first;
+        //     std::cout << "insert" << std::endl;
+        //     // std::cout << 
+        //     difference_type count = 0;
+        //     last--;
+        //     std::cout << *last << std::endl;
+        //     exit(0);
+        //     for(; calcul != last; calcul++){
+        //         count++;
+        //         std::cout << count << std::endl;
+        //     }
+        //     // std::cout << "coutn " << count << std::endl;
+        //     // // difference_type size_free = _capacity;
+        //     // T* copy = _alloc.allocate(_capacity + count);
+        //     // int i = 0;
+        //     // for(iterator it = this->begin(); it != pos; it++){
+        //     //     _alloc.construct(copy + i, *it);
+        //     //     i++;
+        //     // }
+        //     (void)last;
+        //     (void) pos;
+        //     (void ) count;
+        //     // std::cout << copy[0] << std::endl;
+        //     return (_data);
+        // }
+        iterator erase( iterator pos ){
+            T * copy = _alloc.allocate(_capacity);
+            int i = 0;
+            iterator it = this->begin();
+            for(; it != pos; it++){
+                _alloc.construct(copy + i, *it);
+                i++;
+            }
+            it++;
+            for(; it != this->end(); it++){
+                _alloc.construct(copy + i, *it);
+                i++;
+            }
+            
+            _size--;
+            _alloc.deallocate(_data, _capacity);
+            _data  = _alloc.allocate(_capacity);
+            for(size_type i = 0; i < _size; i++){
+                _alloc.construct(_data  + i, copy[i]);
+            }
+            _alloc.deallocate(copy, _capacity);
+            return (_data);
+        }
+        // iterator erase( iterator first, iterator last ){
+        //     T * copy = _alloc.allocate(_capacity);
+        //     int i = 0;
+        //     iterator it = this->begin();
+        //     for(; it != pos; it++){
+        //         _alloc.construct(copy + i, *it);
+        //         i++;
+        //     }
+            
+        // }
+        
         
         
 };
