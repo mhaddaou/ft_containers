@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ReverseIterator.tpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:41:40 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/08 22:27:54 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:17:12 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,3 @@ T& ft::reverse_iterator<T>::operator*() const{
     return (*--tmp);
 }
 
-<img src="https://badge.mediaplus.ma/binary/mhaddaou" alt="mhaddaou 42" width="500">

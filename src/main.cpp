@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 17:26:46 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/08 20:49:53 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:00:34 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,73 +15,103 @@
 #include <vector>
 #include<unistd.h>   
 int main (){
-    std::vector<int> a;
-    a.push_back(9);
-    a.push_back(10);
-    a.push_back(11);
-    a.push_back(12);
-    a.push_back(13);
-    std::vector<int> r;
-    r.push_back(1);
-    r.push_back(2);
-    r.push_back(3);
-    r.push_back(4);
-    r.push_back(5);
-    // a.assign(6,4);
-    // a.reserve(0);
-    // a[0] = 1;
-    // std::cout << a.capacity() << std::endl;
-    // a.insert(a.begin() , 5);
-    // std::cout << a[1] << std::endl;
-    // a.insert(a.begin() + 2, 0);
-    // ft::Vector<int> vec;
-    // vec.assign(a.begin(), a.end());
     std::vector<int> b;
-    b.assign(a.begin(), a.end());
-    b.insert(b.begin(), r.begin(),r.end());
-    ft::vector<int> vec;
-    vec.assign(a.begin(), a.end());
-    ft::vector<int>::iterator pos = vec.begin();
-    pos++;
-    vec.insert(pos, 5);
-    // ft::vector<int>::iterator it = vec.begin();
-    // ft::vector<int>::iterator end = vec.end();
+    b.push_back(0);
+    b.push_back(1);
+    b.push_back(2);
+    b.push_back(3);
+    std::vector<int>::iterator bg = b.begin();
+    std::vector<int>::iterator end = b.end();
+    std::vector<int>::iterator bb = b.begin();
+    std::vector<int>::iterator be = b.end();
+    ft::vector<int> a;
+    int array [] = {9,13,31, 43};
+    std::vector<int> v;
+    v.assign(array, array+4);    
+    a.assign(array,array + 4);
+    ft::vector<int>::iterator it = a.begin();
+    std::vector<int>::iterator ite = v.begin();
     // it++;
-    // // it++;
-    // // --end;
+    // ft::vector<int>::iterator end = a.end();
+    // end--;
     // std::cout << *it << std::endl;
-    // std::cout << "--------------------------------" << std::endl;
-    // vec.erase(it);
-    
-    // for(size_t i = 0; i < vec.size();i++){
-    //     std::cout << vec[i] << std::endl;
+    // a.erase(it, end);
+    v.insert(ite, bb, be);
+    a.insert(it , bg, end);
+    std::cout << "cap " << a.capacity() << std::endl;
+    std::cout << "cap " << v.capacity() << std::endl;
+    ft::vector<int>::iterator e = a.begin();
+    ft::vector<int>::iterator r = a.end();
+    std::vector<int>::iterator ee = v.begin();
+    std::vector<int>::iterator rr = v.end();
+    e++;
+    ee++;
+    ee++;
+    e++;
+    r--;
+    rr--;
+    rr--;
+    r--;
+    a.erase(e, r);
+    v.erase(ee, rr);
+    ft::vector<int>::iterator begin = a.begin();
+    for(; begin != a.end(); ++begin){
+        std::cout << *begin << std::endl;
+    }
+    std::cout << a.capacity() << std::endl;
+    std::cout << a.size() <<std::endl;
+    std::cout << "---------------" << std::endl;
+    std::vector<int>::iterator begine = v.begin();
+    for(; begine != v.end(); ++begine){
+        std::cout << *begine << std::endl;
+    }
+    std::cout << v.capacity() << std::endl;
+    std::cout << v.size() <<std::endl;
+
+    std::cout << "----------------- push back --------------------"<< std::endl;
+    ft::vector<int> m;
+    std::vector<int> l;
+    l.push_back(5);
+    l.push_back(5);
+    l.push_back(5);
+    l.push_back(5);
+    l.push_back(5);
+    ft::vector<int> swap;
+    // l.swap(swap);
+    // // std::cout << l[510] << std::endl;
+    // std::cout << l[0] << std::endl;
+    // std::cout <<"size == " <<  l.size() << std::endl;
+    // std::cout << "capa == " << l.capacity() << std::endl;
+    // std::cout << "cap " << l.capacity() << std::endl;
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.push_back(5);
+    m.swap(swap);
+    if (m == swap)
+        std::cout << "true" << std::endl;
+    else
+        std::cout << "false" << std::endl;
+    // std::cout << m[0] << std::endl;
+    // std::cout << m == swap << std::endl;
+    // for (ft::vector<int>::iterator it = swap.begin(); it != swap.end(); ++it){
+    //     std::cout << *it << std::endl;
     // }
-    // std::cout << vec.size() << std::endl;
-    // std::cout << vec.capacity() << std::endl;
+    // m.resize(5,6);
+    // for (ft::vector<int>::iterator it = m.begin(); it != m.end(); ++it){
+    //     std::cout << *it << std::endl;
+    // }
+    // std::cout << "size == " << m.size() << std::endl;
+    // std::cout << "capa == " << m.capacity() << std::endl;
     
-
-    // // ft::RandomAccessIterator<int> it = vec.end();
-    // ft::Vector<int>::const_iterator it  = vec.begin();
-    // // it--;
-    // // it--;
-    // std::cout << *it << std::endl;
-    // std::vector<int>::iterator i = b.end();
-    // i--;
-    // i--;
-    // vec.insert(it, 5, 11);
-    // b.insert(i, 5, 11);
-
-    // std::cout << "--------------------------------" << std::endl;
-
-    // for (size_t i = 0; i < b.size();i++){
-    //     std::cout << b[i] << std::endl;
-    // } 
-    // std::cout << "--------------------------------" << std::endl;
-    
-    // std::cout << b.capacity() << std::endl;
-    // std::cout << b.size() << std::endl;
-    // std::cout << vec.capacity() << std::endl;
-    // std::cout << vec.size() << std::endl;
+    // std::cout << "m " << m[1] << std::endl;
     
 
     

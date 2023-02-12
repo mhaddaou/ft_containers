@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ra_iterator.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 08:09:12 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/08 20:52:06 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/11 13:46:52 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@
 namespace ft{
     
 
-    template <class Iterator> 
-    class iterator_traits {
-        public:
-            typedef typename Iterator::difference_type		difference_type;
-            typedef typename Iterator::value_type			value_type;
-            typedef typename Iterator::pointer				pointer;
-            typedef typename Iterator::reference			reference;
-            typedef typename Iterator::iterator_category	iterator_category;
-        };
+    template <typename Iterator> 
+    struct iterator_traits {
+        typedef typename Iterator::difference_type		difference_type;
+        typedef typename Iterator::value_type			value_type;
+        typedef typename Iterator::pointer				pointer;
+        typedef typename Iterator::reference			reference;
+        typedef typename Iterator::iterator_category	iterator_category;
+    };
     template <class T> 
     class iterator_traits<T *> {
         public:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 00:46:02 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/08 20:51:54 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:15:33 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 #include <memory>
 #include <stdlib.h>
 #include <string>
+#include <iterator>
 #include "ra_iterator.hpp"
+#include "../utils/urils.hpp"
 #include <sstream>
 namespace ft{
       
@@ -40,7 +42,7 @@ class vector
         typename Allocator::const_pointer    const_pointer;
         typedef ft::RandomAccessIterator<T> iterator;
         //don't forget to add const inside brackerts of T <const T>
-        typedef ft::RandomAccessIterator<const T>  const_iterator;
+        typedef ft::RandomAccessIterator<T>  const_iterator;
             
             // deallocate like free
             // destroy like memeset
@@ -83,22 +85,56 @@ class vector
                 ++first;
             }
         }
-        ~vector() _NOEXCEPT{
+        ~vector() {
             _alloc.deallocate(_data, _size);
             _data = NULL;
         }
-        vector( const vector& other ){
-            this  = other;
+        vector( const vector& other ):_size(0), _capacity(0){            
+            *this = other;
         }
-        vector& operator=( const vector& other){
-            _size = other._size;
-            _capacity = other._capacity;
-            _alloc = other._alloc;
-            _data = _alloc.allocate(_size);
-            for(size_t i = 0; i < _size; ++i){
-                _data[i] = other._data[i];
-            }    
-        }
+        
+        vector& operator=( const vector& other )
+		{
+			for (size_type i = 0; i < _size; i++)
+				_alloc.destroy(_data + i);
+			if (_capacity)
+				_alloc.deallocate(_data, _capacity);
+			_size = other._size;
+			_capacity = other._capacity;
+			_data = _alloc.allocate(_capacity);
+			for (size_type i = 0; i < _size; i++)
+				_alloc.construct(_data + i, other._data[i]);
+			return *this;
+		}
+        // vector& operator=(const vector& other) {
+        //   // Check for self-assignment
+        //   if (this != &other) {
+        //     // std::cout << "size == " << _size << std::endl;
+        //     // exit(0);
+        //     // Deallocate the memory used by the current vector
+        //     // for (size_t i = 0; i < _size; ++i) {
+        //     //   _alloc.destroy(&_data[i]);
+        //     //   std::cout << "here1" << std::endl;
+        //     // }
+        //     std::cout << "cap == " << _capacity << std::endl;
+        //     _alloc.deallocate(_data, _capacity);
+        
+        //     // Copy the size, capacity, and allocator from other
+        //     _size = other._size;
+        //     _capacity = other._capacity;
+        //     _alloc = other._alloc;
+        
+        //     // Allocate new memory and copy the elements from other
+        //     _data = _alloc.allocate(_capacity);
+        //     for (size_t i = 0; i < _size; ++i) {
+        //       std::cout << "here2" << std::endl;
+
+        //       _alloc.construct(&_data[i], other._data[i]);
+        //     }
+        //   }
+        //   return *this;
+        // }
+
         void assign( size_type count, const T& value ){
             if (_size == count){
                 for(size_t i = 0; i < _size; ++i){
@@ -115,9 +151,10 @@ class vector
                 }
             }
         }
+        
         template< class InputIt >
-        void assign( InputIt first, InputIt last ){
-            _size = std::distance(first, last);
+        void assign( InputIt first, InputIt last ) { 
+            _size = distance(first, last);
             _capacity = _size;
             _data = _alloc.allocate(_size);
             for(size_type i = 0; first !=  last; ++i){
@@ -126,11 +163,7 @@ class vector
             }
         }
         // convert unsigned int to string
-        std::string to_str (unsigned int value){
-            std::stringstream ss;
-            ss << value;
-            return ss.str();
-        }
+        
         // class 
         allocator_type get_allocator() const{
             return (_alloc);
@@ -138,30 +171,27 @@ class vector
         // Element access
         reference at( size_type pos ){
             if ( pos >= _size){
-                std::string index = to_str(pos);
-                throw std::out_of_range( index + " is out of bounds" );
+                throw std::out_of_range(" is out of bounds" );
             }
             return (_data[pos]);
             
         }
         const_reference at( size_type pos ) const{
             if (pos >= _size){
-                std::string index = to_str(pos);
-                throw std::out_of_range( index + " is out of bounds");
+                throw std::out_of_range(" is out of bounds");
             }
             return (_data[pos]);
         }
         reference operator[]( size_type pos ){
             if (pos >= _size){
-                std::string index = to_str(pos);
-                throw std::out_of_range( index + " is out of bounds");
+                throw std::out_of_range("is out of bounds");
             }
             return (_data[pos]);
         }
         const_reference operator[]( size_type pos ) const{
             if (pos >= _size){
-                std::string index = to_str(pos);
-                throw std::out_of_range( index + " is out of bounds");
+                // std::string index = to_str(pos);
+                throw std::out_of_range( " is out of bounds");
             }
             return (_data[pos]);
         }
@@ -293,33 +323,41 @@ class vector
             _alloc.deallocate(copy, _capacity);
             return _data;
         }
-        // template< class InputIt >
-        // iterator insert( const_iterator pos, InputIt first, InputIt last ){
-        //     iterator calcul = first;
-        //     std::cout << "insert" << std::endl;
-        //     // std::cout << 
-        //     difference_type count = 0;
-        //     last--;
-        //     std::cout << *last << std::endl;
-        //     exit(0);
-        //     for(; calcul != last; calcul++){
-        //         count++;
-        //         std::cout << count << std::endl;
-        //     }
-        //     // std::cout << "coutn " << count << std::endl;
-        //     // // difference_type size_free = _capacity;
-        //     // T* copy = _alloc.allocate(_capacity + count);
-        //     // int i = 0;
-        //     // for(iterator it = this->begin(); it != pos; it++){
-        //     //     _alloc.construct(copy + i, *it);
-        //     //     i++;
-        //     // }
-        //     (void)last;
-        //     (void) pos;
-        //     (void ) count;
-        //     // std::cout << copy[0] << std::endl;
-        //     return (_data);
-        // }
+
+        template< class InputIt >
+        iterator insert( const_iterator pos, InputIt first, InputIt last ){
+            difference_type free_size = _capacity;
+            size_type size = ft::distance(first, last); 
+            T* copy = _alloc.allocate(_capacity + size);
+            const_iterator it = this->begin();
+            size_type i = 0;
+            for(; it != pos; ++it){
+                _alloc.construct(copy + i, *it);
+                i++;
+            }
+            for (; first != last; ++first){
+                _alloc.construct(copy + i, *first);
+                i++;
+                if (i + 1 > static_cast<size_type>(_capacity))
+                    _capacity *= 2;
+            }
+            
+            for (; it != this->end(); it++){
+                _alloc.construct(copy + i , *it);
+                i++;
+                // if (i + 1 > static_cast<size_type>(_capacity))
+                //     _capacity *= 2;
+            }
+            _alloc.deallocate(_data, free_size);
+            _data = _alloc.allocate(_capacity);
+            for(size_type c = 0; c < i; c++){
+                _alloc.construct(_data + c, copy[c]);
+            }
+            _size = i;
+           _alloc.deallocate(copy, _size);
+            return (_data);
+        }
+        
         iterator erase( iterator pos ){
             T * copy = _alloc.allocate(_capacity);
             int i = 0;
@@ -343,20 +381,122 @@ class vector
             _alloc.deallocate(copy, _capacity);
             return (_data);
         }
-        // iterator erase( iterator first, iterator last ){
-        //     T * copy = _alloc.allocate(_capacity);
-        //     int i = 0;
-        //     iterator it = this->begin();
-        //     for(; it != pos; it++){
-        //         _alloc.construct(copy + i, *it);
-        //         i++;
-        //     }
+        iterator erase( iterator first, iterator last ){
+            size_t dis = ft::distance(first, last);
+            size_type size = _size - dis;
+            T* copy = _alloc.allocate(size);
+            iterator it = this->begin();
+            size_type i = 0;
+            for (; it != first; ++it){
+                _alloc.construct(copy + i, *it);
+                i++;
+            }
+            for (; last != this->end(); ++last){
+                _alloc.construct(copy + i, *last);
+                i++;
+            }
+            _alloc.deallocate(_data, _capacity);
+            _data = _alloc.allocate(_capacity);
+            for (size_type j = 0; j < i; j++){
+                _alloc.construct(_data + j, copy[j]);
+            }
+            _alloc.deallocate(copy, size);
+            _size = i;
+            return (_data);
+        }
+        
+        void push_back(const T& value) {
+        if (_size == static_cast<size_type>(_capacity)) {
+            size_t new_capacity = _capacity == 0 ? 1 : _capacity * 2;
+            T* new_data = _alloc.allocate(new_capacity);
+            T* dest = new_data;
+            T* src = _data;
+            for (size_t i = 0; i < _size; ++i) {
+                _alloc.construct(dest, *src);
+                ++dest;
+                ++src;
+            }
+            _alloc.deallocate(_data, _capacity);
+            _data = new_data;
+            _capacity = new_capacity;
+        }
+        _alloc.construct(_data + _size, value);
+        ++_size;
+        }
+        void pop_back(){
+            T* new_data = _alloc.allocate(_capacity);
+            for (size_type i = 0; i < _size - 1; i++){
+                _alloc.construct(new_data + i, _data[i]);
+            }
+            _alloc.deallocate(_data, _capacity);
+            _data = new_data;
+            _size--;
+        }
+        void resize( size_type count, T value = T() ){
+            T* new_data = NULL;
+            if (count <= _size){
+                new_data = _alloc.allocate(_capacity);
+                for (size_type i = 0; i < count ; i++){
+                    _alloc.construct(new_data + i, _data[i]);
+                }
+                _size = count;
+            }
+            else if (count > _size){
+                _capacity = count;
+                new_data = _alloc.allocate(_capacity);
+                if (new_data == NULL)
+                    throw std::bad_alloc();
+                for (size_type i = 0; i < _size; i++){
+                    _alloc.construct(new_data + i, _data[i]);
+                }
+                for (size_type i = _size; i < count; i++){
+                    _alloc.construct(new_data + i, value);
+                }
+                _size = count;
+            }
+            _alloc.deallocate(_data, _capacity);
+            _data = new_data;
             
-        // }
+        }
         
-        
-        
+        void swap( vector& other ){
+            ft::vector<T> temp(*this);       
+            *this = other;
+            other = temp;
+        }
 };
+    template< class T, class Alloc >
+    bool operator==( const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs ){
+        if (lhs.size() != rhs.size())
+            return (false);
+        for (size_t i = 0; i < lhs.size(); i++){
+            if (lhs[i] != rhs[i])
+                return (false);
+        }
+        return (true);        
+    }
+    template< class T, class Alloc >
+    bool operator!=( const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs ){
+        return (!(lhs == rhs));
+    }
+    template< class T, class Alloc >
+    bool operator<( const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs ){
+        size_t i = 0;
+        while (i < lhs.size() && i < rhs.size()){
+            if (lhs[i] < rhs[i])
+                return (true);
+            else if (lhs[i] > rhs[i])
+                return (false);
+            i++;
+        }
+        if (i == lhs.size() && i != rhs.size())
+            return (true);
+        return (false);
+    }
+
+
+
+
 };
 
 

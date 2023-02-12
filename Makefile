@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mhaddaou <mhaddaou@student.42.fr>          +#+  +:+       +#+         #
+#    By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 08:08:04 by mhaddaou          #+#    #+#              #
-#    Updated: 2023/02/08 21:41:23 by mhaddaou         ###   ########.fr        #
+#    Updated: 2023/02/12 12:48:20 by mhaddaou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = ft_containers
 FLAGS = -Wall -Wextra -Werror -std=c++98 -g -fsanitize=address,undefined,integer
 SRC = src/main.cpp  
 # src/vector/vector.cpp
-CC = c++
+CC = clang++
 HEADER = includes/vector/ra_iterator.hpp includes/vector/vector.hpp includes/ReverseIterator.hpp
 RM = rm -rf
 
