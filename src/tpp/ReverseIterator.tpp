@@ -6,20 +6,11 @@
 /*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:41:40 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/13 00:30:52 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:33:08 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/vector/ReverseIterator.hpp"
-
-// template <typename Iter>
-
-// Iter iterator_type;
-// typename ft::iterator_traits<Iter>::iterator_category iterator_category;
-// typename ft::iterator_traits<Iter>::value_type value_type;
-// typename ft::iterator_traits<Iter>::difference_type difference_type;
-// typename ft::iterator_traits<Iter>::pointer pointer;
-// typename ft::iterator_traits<Iter>::reference reference;
 
 
 template <typename T>
