@@ -6,7 +6,7 @@
 /*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 17:26:46 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/12 16:00:34 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/13 00:09:30 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,27 @@ int main (){
     // std::cout << "capa == " << m.capacity() << std::endl;
     
     // std::cout << "m " << m[1] << std::endl;
+    std::cout << "----------------------------------- reverse iterator ---------------------------" << std::endl;   
+    std::vector<int> p;
+    p.push_back(0);
+    p.push_back(1);
+    p.push_back(2);
     
-
+    std::vector<int>::reverse_iterator itt = p.rend();
+    // std::cout << *itt.base() << std::endl;
+    itt--;
+    itt--;
+    std::cout << *itt << std::endl;
+    
+    ft::vector<int> aa;
+    aa.push_back(0);
+    aa.push_back(1);
+    aa.push_back(2);
+    ft::vector<int>::reverse_iterator iti = aa.rend();
+    // std::cout << *iti.base();
+    iti--;
+    iti--;
+    std::cout << *iti << std::endl;
     
 
     

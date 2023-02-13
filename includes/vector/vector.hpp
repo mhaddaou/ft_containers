@@ -6,7 +6,7 @@
 /*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 00:46:02 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/12 16:15:33 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/13 00:03:16 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <string>
 #include <iterator>
 #include "ra_iterator.hpp"
+#include "ReverseIterator.hpp"
 #include "../utils/urils.hpp"
 #include <sstream>
 namespace ft{
@@ -42,23 +43,27 @@ class vector
         typename Allocator::const_pointer    const_pointer;
         typedef ft::RandomAccessIterator<T> iterator;
         //don't forget to add const inside brackerts of T <const T>
-        typedef ft::RandomAccessIterator<T>  const_iterator;
+        typedef ft::RandomAccessIterator<const T>  const_iterator;
+        typedef ft::reverse_iterator<iterator>					reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
             
             // deallocate like free
             // destroy like memeset
         // Member functions
-        vector(){
-            _size = 0;
-            _data = NULL;
-            _capacity = 0;
-            _alloc = Allocator();
-        };
-        explicit vector( const Allocator& alloc ){
-            _size = 0;
-            _data = NULL;
-            _capacity = 0;
-            _alloc = alloc;
-        };
+        vector();
+        // {
+        //     _size = 0;
+        //     _data = NULL;
+        //     _capacity = 0;
+        //     _alloc = Allocator();
+        // };
+        explicit vector( const Allocator& alloc );
+        // {
+        //     _size = 0;
+        //     _data = NULL;
+        //     _capacity = 0;
+        //     _alloc = alloc;
+        // };
         // _data = _alloc.allocate(    number of allocations );
         // vector(count nummber of times , value inserted value count times)
         explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) :_size(0){
@@ -234,6 +239,10 @@ class vector
         const_iterator end() const{
             return (_data + _size);
         }
+        reverse_iterator rbegin();
+        const_reverse_iterator rbegin() const;
+        reverse_iterator rend();
+        const_reverse_iterator rend() const;
         // Capacity
         bool empty() const{
             return (_size == 0);
@@ -495,7 +504,7 @@ class vector
     }
 
 
-
+#include "../../src/vector/vector.tpp"
 
 };
 
