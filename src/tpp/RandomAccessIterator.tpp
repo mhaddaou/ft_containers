@@ -6,7 +6,7 @@
 /*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 17:45:59 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/13 11:42:13 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/15 14:33:59 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,33 +86,8 @@ bool ft::RandomAccessIterator<T>::operator >= (const RandomAccessIterator & othe
     return (_ptr >= other._ptr);
 }
 
-template<class Iter1, class Iter2>
-bool operator== (const ft::RandomAccessIterator<Iter1>&lhs,
-            const ft::RandomAccessIterator<Iter2>&rhs){
-                return (lhs._ptr == rhs._ptr);
-            }
-template<class Iter1, class Iter2>
-bool operator!= (const ft::RandomAccessIterator<Iter1>&lhs,
-            const ft::RandomAccessIterator<Iter2>&rhs){
-                return (lhs._ptr != rhs._ptr);
-            }
-template <class Iter1, class Iter2>
-bool operator < (const ft::RandomAccessIterator<Iter1>&lhs,
-            const ft::RandomAccessIterator<Iter2>&rhs){
-                return (lhs._ptr < rhs._ptr);
-            }
-template <class Iter1, class Iter2>
-bool operator <=(const ft::RandomAccessIterator<Iter1>&lhs,
-            const ft::RandomAccessIterator<Iter2>&rhs){
-                return (lhs._ptr <= rhs._ptr);
-            }
-template < class Iter1, class Iter2>
-bool operator > (const ft::RandomAccessIterator<Iter1>&lhs,
-            const ft::RandomAccessIterator<Iter2>&rhs){
-                return (lhs._ptr > rhs._ptr);
-            }
-template <class Iter1, class Iter2>
-bool operator >= (const ft::RandomAccessIterator<Iter1>&lhs,
-            const ft::RandomAccessIterator<Iter2>&rhs){
-                return (lhs._ptr >= rhs._ptr);
-            }
+
+template <class T>
+T* ft::RandomAccessIterator<T>::getPtr() const {
+    return (_ptr);
+}

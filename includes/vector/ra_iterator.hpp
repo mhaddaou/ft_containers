@@ -6,7 +6,7 @@
 /*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 08:09:12 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/13 11:32:31 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/15 14:34:05 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,29 +56,42 @@ namespace ft{
             bool operator <=(const RandomAccessIterator& other) const;
             bool operator > (const RandomAccessIterator& other) const;
             bool operator >=(const RandomAccessIterator& other) const;
+            T* getPtr() const;
             
-        private:
+        protected:
             T* _ptr;
         
     };
     template< class Iterator1, class Iterator2 >
     bool operator==( const ft::RandomAccessIterator<Iterator1>& lhs,
-                 const ft::RandomAccessIterator<Iterator2>& rhs );
+                 const ft::RandomAccessIterator<Iterator2>& rhs ){
+                    return ((lhs.getPtr() == rhs.getPtr()));
+                 }
     template< class Iterator1, class Iterator2 >
     bool operator!=( const ft::RandomAccessIterator<Iterator1>& lhs,
-                 const ft::RandomAccessIterator<Iterator2>& rhs );
+                 const ft::RandomAccessIterator<Iterator2>& rhs ){
+                    return (lhs.getPtr() != rhs.getPtr());
+                 }
     template< class Iterator1, class Iterator2 >
     bool operator<( const ft::RandomAccessIterator<Iterator1>& lhs,
-                const ft::RandomAccessIterator<Iterator2>& rhs );
+                const ft::RandomAccessIterator<Iterator2>& rhs ){
+                    return (lhs.getPtr() < rhs.getPtr());
+                }
     template< class Iterator1, class Iterator2 >
     bool operator<=( const ft::RandomAccessIterator<Iterator1>& lhs,
-                 const ft::RandomAccessIterator<Iterator2>& rhs );
+                 const ft::RandomAccessIterator<Iterator2>& rhs ){
+                    return (lhs.getPtr() <= rhs.getPtr());
+                 }
     template< class Iterator1, class Iterator2 >
     bool operator>( const ft::RandomAccessIterator<Iterator1>& lhs,
-                const ft::RandomAccessIterator<Iterator2>& rhs );
+                const ft::RandomAccessIterator<Iterator2>& rhs ){
+                    return (lhs.getPtr() > rhs.getPtr());
+                }
     template< class Iterator1, class Iterator2 >
     bool operator>=( const ft::RandomAccessIterator<Iterator1>& lhs,
-                 const ft::RandomAccessIterator<Iterator2>& rhs );
+                 const ft::RandomAccessIterator<Iterator2>& rhs ){
+                    return (lhs.getPtr() >= rhs.getPtr());
+                 }
 
     #include "../../src/tpp/RandomAccessIterator.tpp"
 };
