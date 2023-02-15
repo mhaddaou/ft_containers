@@ -6,12 +6,14 @@
 /*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 17:26:46 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/15 14:29:40 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:55:12 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/vector/ra_iterator.hpp"
 #include "../includes/vector/vector.hpp"
+#include "../includes/stack/stack.hpp"
+#include <stack>
 #include <vector>
 #include<unistd.h>   
 int main (){
@@ -134,7 +136,44 @@ int main (){
     iti--;
     std::cout << *iti << std::endl;
     std::cout << "--------------test----------------" << std::endl;
+
+    ft::vector<int> _vec;
+
+    _vec.push_back(5);
+    _vec.push_back(15);
+    _vec.push_back(20);
+    std::vector<int> _a;
+    _a.push_back(5);
+    _a.push_back(15);
+    _a.push_back(20);
+    std::vector<int>::iterator _i;
+    std::cout << "----------std----------" << std::endl;
+    for (std::vector<int>::iterator i = _a.begin(); i != _a.end(); ++i){
+        std::cout << *i << std::endl;
+    }
+    std::cout << "capacity: " << _a.capacity() << std::endl;
+    std::cout << "size: " << _a.size() << std::endl;
+    std::cout << "----------ft.----------" << std::endl;
+
+    for (ft::vector<int>::iterator _it = _vec.begin();_it != _vec.end(); ++_it){
+        std::cout << *_it << std::endl;
+    }
     
+    std::cout << "capacity: " << _vec.capacity() << std::endl;
+    std::cout << "size: " << _vec.size() << std::endl;
+    
+    std::cout << "--------------------------test stack ------------------------" << std::endl;
+    std::stack<int> st;
+    st.push(5);
+    st.push(6);
+    st.pop();
+    std::cout << st.top() <<   std::endl;
+    ft::stack<int>  stack;
+    stack.push(5);
+    stack.push(6);
+    stack.pop();
+    std::cout << stack.top() << std::endl;
+        
 
     
     return (0);
