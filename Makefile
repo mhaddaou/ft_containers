@@ -6,7 +6,7 @@
 #    By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 08:08:04 by mhaddaou          #+#    #+#              #
-#    Updated: 2023/02/15 15:04:54 by mhaddaou         ###   ########.fr        #
+#    Updated: 2023/02/17 14:52:56 by mhaddaou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++98 -g -fsanitize=address,undefined,integer
 SRC = src/main.cpp  
 # src/vector/vector.cpp
 CC = clang++
-HEADER = includes/vector/ra_iterator.hpp includes/vector/vector.hpp includes/vector/ReverseIterator.hpp includes/stack/stack.hpp
+HEADER = includes/vector/ra_iterator.hpp includes/vector/vector.hpp includes/vector/ReverseIterator.hpp includes/stack/stack.hpp includes/pair/pair.hpp
 RM = rm -rf
 
 %.o: %.cpp

@@ -6,13 +6,14 @@
 /*   By: mhaddaou < mhaddaou@student.1337.ma>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 17:26:46 by mhaddaou          #+#    #+#             */
-/*   Updated: 2023/02/15 15:55:12 by mhaddaou         ###   ########.fr       */
+/*   Updated: 2023/02/17 16:22:22 by mhaddaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/vector/ra_iterator.hpp"
 #include "../includes/vector/vector.hpp"
 #include "../includes/stack/stack.hpp"
+#include "../includes/pair/pair.hpp"
 #include <stack>
 #include <vector>
 #include<unistd.h>   
@@ -173,6 +174,8 @@ int main (){
     stack.push(6);
     stack.pop();
     std::cout << stack.top() << std::endl;
+
+    // std::cout << 
         
 
     
